@@ -63,5 +63,5 @@ using namespace std;
 // 	cout << "sc.Camel::age :" << sc.Camel::age << endl;
 // 
 // 	cout << sizeof(sc);
-	
+// 	
 //}

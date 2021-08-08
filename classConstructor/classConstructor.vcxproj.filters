@@ -39,6 +39,9 @@
     <ClCompile Include="classAndObject3.cpp">
       <Filter>Source Files\ClassAndObject</Filter>
     </ClCompile>
+    <ClCompile Include="Dynamic_vfptr_Abstract.cpp">
+      <Filter>Source Files\ClassAndObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
