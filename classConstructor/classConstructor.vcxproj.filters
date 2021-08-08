@@ -33,6 +33,12 @@
     <ClCompile Include="classAndObject.cpp">
       <Filter>Source Files\ClassAndObject</Filter>
     </ClCompile>
+    <ClCompile Include="ClassAndObject2.cpp">
+      <Filter>Source Files\ClassAndObject</Filter>
+    </ClCompile>
+    <ClCompile Include="classAndObject3.cpp">
+      <Filter>Source Files\ClassAndObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">

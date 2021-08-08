@@ -140,6 +140,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="classAndObject.cpp" />
+    <ClCompile Include="ClassAndObject2.cpp" />
+    <ClCompile Include="classAndObject3.cpp" />
     <ClCompile Include="ClassObjectMember.cpp" />
     <ClCompile Include="constructor.cpp" />
     <ClCompile Include="constructor_initial.cpp" />
