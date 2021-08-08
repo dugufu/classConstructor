@@ -145,8 +145,11 @@
     <ClCompile Include="ClassObjectMember.cpp" />
     <ClCompile Include="constructor.cpp" />
     <ClCompile Include="constructor_initial.cpp" />
+    <ClCompile Include="dynamic_example_buildPC.cpp" />
     <ClCompile Include="Dynamic_vfptr_Abstract.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="manipulate_document.cpp" />
+    <ClCompile Include="pure_deconstructor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h" />

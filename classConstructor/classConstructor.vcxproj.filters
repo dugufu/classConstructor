@@ -42,6 +42,15 @@
     <ClCompile Include="Dynamic_vfptr_Abstract.cpp">
       <Filter>Source Files\ClassAndObject</Filter>
     </ClCompile>
+    <ClCompile Include="pure_deconstructor.cpp">
+      <Filter>Source Files\ClassAndObject</Filter>
+    </ClCompile>
+    <ClCompile Include="dynamic_example_buildPC.cpp">
+      <Filter>Source Files\ClassAndObject</Filter>
+    </ClCompile>
+    <ClCompile Include="manipulate_document.cpp">
+      <Filter>Source Files\ClassAndObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">

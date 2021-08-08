@@ -5,9 +5,7 @@ using namespace std;
 // 
 // class Calculator {
 // public:
-// 	virtual int getResult() {
-// 		return 0;
-// 	};
+// 	virtual int getResult() = 0; //pure virtual function vftable
 // 
 // 	int num1;
 // 	int num2;
