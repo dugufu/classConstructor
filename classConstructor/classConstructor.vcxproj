@@ -145,13 +145,16 @@
     <ClCompile Include="ClassObjectMember.cpp" />
     <ClCompile Include="constructor.cpp" />
     <ClCompile Include="constructor_initial.cpp" />
+    <ClCompile Include="document_binary_push.cpp" />
     <ClCompile Include="dynamic_example_buildPC.cpp" />
     <ClCompile Include="Dynamic_vfptr_Abstract.cpp" />
+    <ClCompile Include="employee.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manipulate_document.cpp" />
     <ClCompile Include="pure_deconstructor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="employee.h" />
     <ClInclude Include="Header.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -16,6 +16,9 @@
     <Filter Include="Source Files\ClassAndObject">
       <UniqueIdentifier>{4a63b8d8-d377-457f-826b-43aa5c9ca573}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\EmployeeSystem">
+      <UniqueIdentifier>{27126585-e824-4ae0-92aa-58c17370a88d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,9 +54,18 @@
     <ClCompile Include="manipulate_document.cpp">
       <Filter>Source Files\ClassAndObject</Filter>
     </ClCompile>
+    <ClCompile Include="document_binary_push.cpp">
+      <Filter>Source Files\ClassAndObject</Filter>
+    </ClCompile>
+    <ClCompile Include="employee.cpp">
+      <Filter>Source Files\EmployeeSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="employee.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
