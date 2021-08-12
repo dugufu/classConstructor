@@ -19,7 +19,7 @@ using namespace std;
 // class Animal {
 // public:
 // 	virtual void doSpeak() {
-// 		cout << "Animal speaking" << endl;
+// 		cout << "Animal speaking" << endl; //animalsdsadasdasdsasadasdsddasdsadsadsad
 // 	}
 // 
 // };
