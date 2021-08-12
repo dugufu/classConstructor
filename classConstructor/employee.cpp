@@ -23,9 +23,13 @@ int main() {
 	int num = -1;
 	int program = -1;
 	Employee_level emp;
+	ReadFile(&emp);
+	
+
 	while (program != 0)
 	{
 		system("CLS");
+		
 		showMenu();
 		cout << "\nEnter Number here" << endl;
 		checkIntInputType(&num);
@@ -50,12 +54,38 @@ int main() {
 			SearchEmployee(&emp);
 			break;
 		case 6:
+			ReOrdering(&emp);
 			break;
 		case 7:
+			DeleteAllData(&emp);
 			break;
 		default:
 			break;
 		}
+	}
+}
+
+//function delete all data
+void DeleteAllData(Employee_level* emp)
+{
+	char tempChar;
+
+jump:
+	cout << "Are you sure to clean up your employee data record ? ( y / n )" << endl;
+	cin >> tempChar;
+	if (tempChar == 'y') {
+		emp->m_employee_id = 0;
+		ofstream ofs(FileName, ios::trunc);
+		ofs.close();
+
+		cout << "Data clean up !" << endl;
+	}
+	else if (tempChar == 'n') {
+		cout << "Exit to main menu ...." << endl;
+	}
+	else {
+		cout << "Please enter only 'y' or 'n' " << endl;
+		goto jump;
 	}
 }
 
@@ -72,13 +102,14 @@ void AddNewEmployee(Employee_level * emp_lv) {
 
 	if (num > 0)
 	{
-		string e_name;
+		char e_name[24];
 		int position;
 		for (int i = 0; i < num; i++)
 		{
 			jump_name:
 			cout << "Enter Employee " << i + 1 << " name :" << endl;
-			cin >> e_name;
+			cin.ignore();
+			cin.getline(e_name, 24);
 			if (e_name != "")
 			{
 				cout << "Enter Employee " << i + 1 << " position : ( 0 = Boss 1 = Manager 2 = Employee )" << endl;
@@ -86,12 +117,17 @@ void AddNewEmployee(Employee_level * emp_lv) {
 				emp_lv->personArray[emp_lv->m_employee_id].m_name = e_name;
 				emp_lv->personArray[emp_lv->m_employee_id].m_position = position;
 				emp_lv->m_employee_id++;
+				emp_lv->personArray[emp_lv->m_employee_id - 1].m_id = emp_lv->m_employee_id;
+
+				//write into text.txt
+				SaveFile(emp_lv);
 
 			}
 			else {
 				goto jump_name;
 			}
 		}
+		
 	}
 	else {
 		goto jump_to_add_employee;
@@ -101,18 +137,23 @@ void AddNewEmployee(Employee_level * emp_lv) {
 
 //display
 void DisplayDetails(Employee_level * emp_lvl) {
+
+
 	if (emp_lvl->m_employee_id > 0)
 	{
 		for (int i = 0; i < emp_lvl->m_employee_id ; i++)
 		{
 			Boss* temp_person = EnterPosition(&emp_lvl->personArray[i].m_position);
-			cout<< "Employee ID :"<< i + 1 << "\tName : " << emp_lvl->personArray[i].m_name << "\t\tPosition : ";
+			cout<< "Employee ID :"<< emp_lvl->personArray[i].m_id << "\tName : " << emp_lvl->personArray[i].m_name << "\t\t Position : "<< getPosition(&emp_lvl->personArray[i].m_position) << "\t\Duty : ";
 			temp_person->duty();
 			cout << endl;
 			delete temp_person;
 			temp_person = NULL;
 
+
 		}
+		
+
 	}
 	else {
 		cout << "No data found" << endl;
@@ -123,10 +164,11 @@ void DisplayDetails(Employee_level * emp_lvl) {
 
 
 //search
-void SearchEmployee(Employee_level* emp_lvl, int deleteStatus) {
-	string status_string;
+void SearchEmployee(Employee_level* emp_lvl, int deleteStatus, int editStatus) {
+	string status_string = "search";
 	if (deleteStatus == 1) { status_string = "delete"; }
-	else { status_string = "search"; };
+	if (editStatus == 1) { status_string = "edit"; }
+
 	
 	cout << "Select one of these options to "<< status_string <<" the data you want" << endl;
 	cout << "Option 1 : "<< status_string <<" by employee ID press keyboard 1" << endl;
@@ -152,6 +194,21 @@ void SearchEmployee(Employee_level* emp_lvl, int deleteStatus) {
 
 							emp_lvl->m_employee_id--;
 							cout << "Employee Deleted" << endl;
+						}
+						else if (editStatus == 1) //edit employee by id
+						{
+							char edit_name[24];
+							int edit_position;
+							cout << "Editing this employee details  ( " << emp_lvl->personArray[i].m_name << " )" << endl;
+							cout << "Enter your new name: ";
+							cin.ignore();
+							cin.getline(edit_name, 24);
+
+
+							cout << "Enter New Position :  ( 0 = boss 1 = manager 2 = employee )" << endl;
+							checkIntInputType(&edit_position);
+							emp_lvl->personArray[i].m_name = edit_name;
+							emp_lvl->personArray[i].m_position = edit_position;
 						}
 						else
 						{
@@ -194,6 +251,22 @@ void SearchEmployee(Employee_level* emp_lvl, int deleteStatus) {
 						emp_lvl->m_employee_id--;
 						cout << "Employee Deleted" << endl;
 					}
+					else if (editStatus == 1) //edit employee by name
+					{
+						char edit_name[24];
+						int edit_position;
+						cout << "Editing this employee details  ( " << emp_lvl->personArray[i].m_name << " )" << endl;
+						
+
+						cout << "Enter your new name: ";
+						cin.ignore();
+						cin.getline(edit_name, 24);
+// 					
+						cout << "Enter New Position :  ( 0 = boss 1 = manager 2 = employee )" << endl;
+						checkIntInputType(&edit_position);
+						emp_lvl->personArray[i].m_name = edit_name;
+						emp_lvl->personArray[i].m_position = edit_position;
+					}
 					else {
 						Boss* temp_person = EnterPosition(&emp_lvl->personArray[i].m_position);
 						cout << "Employee ID :" << i + 1 << "\tName : " << emp_lvl->personArray[i].m_name << "\t\tPosition : ";
@@ -218,9 +291,84 @@ void SearchEmployee(Employee_level* emp_lvl, int deleteStatus) {
 //delete
 void DeleteEmployee(Employee_level* emp) {
 	SearchEmployee(emp, 1); //1 is turn on delete status
+	SaveFile(emp);
 }
 
+// Edit
+void EditEmployeeDetails(Employee_level* emp) {
+	SearchEmployee(emp, 0, 1); // 0 deletestatus = false editstatus = true
+}
 
+//Reordering
+void ReOrdering(Employee_level* emp_lvl) {
+	if (emp_lvl->m_employee_id > 0)
+	{
+		int num;
+		cout << "Press 1 for order sequences" << endl;
+		cout << "Press 2 for reverse sequences" << endl;
+		checkIntInputType(&num, 1);
+		if (num == 1) //ordering sequences
+		{
+			for (int i = 0; i < emp_lvl->m_employee_id; i++)
+			{
+				for (int j = 1 + i; j < emp_lvl->m_employee_id; j++)
+				{
+					if (emp_lvl->personArray[i].m_id > emp_lvl->personArray[j].m_id)
+					{
+						//store temp data
+						int temp_id = emp_lvl->personArray[j].m_id;
+						int temp_pos = emp_lvl->personArray[j].m_position;
+						string temp_name = emp_lvl->personArray[j].m_name;
+
+						//swap value
+						emp_lvl->personArray[j].m_id = emp_lvl->personArray[i].m_id;
+						emp_lvl->personArray[j].m_name = emp_lvl->personArray[i].m_name;
+						emp_lvl->personArray[j].m_position = emp_lvl->personArray[i].m_position;
+
+						//swap value step 2
+						emp_lvl->personArray[i].m_id = temp_id;
+						emp_lvl->personArray[i].m_name = temp_name;
+						emp_lvl->personArray[i].m_position = temp_pos;
+					}
+				}
+			}
+			DisplayDetails(emp_lvl);
+		}
+		else if (num == 2)//reverse ordering sequences
+		{
+			for (int i = 0; i < emp_lvl->m_employee_id; i++)
+			{
+				for (int j = 1 + i; j < emp_lvl->m_employee_id; j++)
+				{
+					if (emp_lvl->personArray[i].m_id < emp_lvl->personArray[j].m_id)
+					{
+						//store temp data
+						int temp_id = emp_lvl->personArray[j].m_id;
+						int temp_pos = emp_lvl->personArray[j].m_position;
+						string temp_name = emp_lvl->personArray[j].m_name;
+
+						//swap value
+						emp_lvl->personArray[j].m_id = emp_lvl->personArray[i].m_id;
+						emp_lvl->personArray[j].m_name = emp_lvl->personArray[i].m_name;
+						emp_lvl->personArray[j].m_position = emp_lvl->personArray[i].m_position;
+
+						//swap value step 2
+						emp_lvl->personArray[i].m_id = temp_id;
+						emp_lvl->personArray[i].m_name = temp_name;
+						emp_lvl->personArray[i].m_position = temp_pos;
+					}
+				}
+			}
+			DisplayDetails(emp_lvl);
+		}
+		}else 
+		{
+			cout << "No data found" << endl;
+
+		}
+	};
+
+//*****************************************************************************************************************************************************************************************
 //Extra Func
 void checkIntInputType(int * num, int search) {
 	if (search == 1)
@@ -236,7 +384,7 @@ void checkIntInputType(int * num, int search) {
 	{
 		while (!(cin >> *num)) {
 			cout << "\nEnter Number Again" << endl;
-			cout << "Error : Enter only number" << endl;;
+			cout << "Error : Enter only number" << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -259,4 +407,90 @@ Boss * EnterPosition(int * position) {
 		temp_person = new Employee;
 		return temp_person;
 	}
+}
+
+string getPosition(int* position) {
+	
+	string s_position;
+	if (*position == 0) {
+		s_position = "Boss";
+		return  s_position;
+	}else if (*position == 1) {
+		s_position = "Manager";
+		return s_position;
+	}else {
+		s_position = "Employee";
+		return s_position;
+	}
+}
+
+//Save file
+void SaveFile(Employee_level * emp) {
+	ofstream ofs;
+	ofs.open(FileName, ios::out);
+
+	for (int i = 0; i < emp->m_employee_id; i++)
+	{
+		ofs << emp->personArray[i].m_id << " "
+			<< emp->personArray[i].m_name << " "
+			<< emp->personArray[i].m_position << endl;
+	}
+	ofs.close();
+}
+
+//read file
+void ReadFile(Employee_level* emp) {
+	bool Is_file_Exists = true;
+	bool Is_file_data = true;
+	ifstream ifs;
+	ifs.open(FileName, ios::in);
+	//document no found
+	if (!ifs.is_open())
+	{
+		cout << "No document exists" << endl;
+		emp->m_employee_id = 0;
+		Is_file_Exists = false;
+		Is_file_data = false;
+		ifs.close();
+
+	};
+	
+	//document found but no data exists
+	char ch;
+	ifs >> ch;
+	if (ifs.eof())
+	{
+		cout << "No data exists" << endl;
+		emp->m_employee_id = 0;
+		Is_file_Exists = true;
+		Is_file_data = false;
+		ifs.close();
+	}
+
+	//document exists and use data
+	if (Is_file_Exists == true && Is_file_data == true)
+	{
+		ifstream ifsfile;
+		ifsfile.open(FileName, ios::in);
+		int m_id;
+		string m_name;
+		int position;
+		int emp_num = 0;
+
+		while (ifsfile >> m_id && ifsfile >> m_name && ifsfile >> position)
+		{
+
+			emp->personArray[emp_num].m_name = m_name;
+			emp->personArray[emp_num].m_position = position;
+			emp->personArray[emp_num].m_id = m_id;
+			emp_num++;
+
+		}
+		
+		emp->m_employee_id = emp_num;
+		cout << "Current employee numbers :" << emp_num << endl;
+	}
+	
+	
+	ifs.close();
 }
